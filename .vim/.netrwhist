@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/jalundbe/Dropbox/Projects/predict_actions'
+let g:netrw_dirhist_2='/home/jalundbe/Dropbox/Projects'
+let g:netrw_dirhist_3='/home/jalundbe/Dropbox/Projects/MCTS'
+let g:netrw_dirhist_4='/home/jalundbe/Dropbox/Projects/MCTS/mcts_poker'
+let g:netrw_dirhist_5='/home/jalundbe/Dropbox/Projects/MCTS/mcts_poker/src'
+let g:netrw_dirhist_6='/home/jalundbe/Dropbox/Projects/predict_actions/src'
+let g:netrw_dirhist_7='/home/khalavak/.dotfiles/.vim'
