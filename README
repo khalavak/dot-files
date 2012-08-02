@@ -1,0 +1,22 @@
+dot-files
+=========
+gitified dot-files for *nix boxes. Just clone the files to your box and link appropriately to get an unified experience. 
+
+
+To clone the files to your box:
+
+cd ~
+git clone git@github.com:khalavak/dot-files.git ~/.dotfiles
+
+cd ~/.dotfiles
+git submodule init
+git submodule update
+ln -s ~/.dotfiles/.vimrc ~/.vimrc
+ln -s ~/.dotfiles/.vim ~/.vim
+ln -s ~/.dotfiles/.bashrc ~/.bashrc
+
+
+To update all git modules :
+
+git submodule foreach git pull branch master
+
