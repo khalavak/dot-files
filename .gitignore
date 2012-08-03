@@ -1,0 +1,2 @@
+# Don't git .pentadactyl directory, as it contains some history/browsing information
+.pentadactyl
