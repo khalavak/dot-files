@@ -82,7 +82,7 @@ theme.titlebar_maximized_button_normal_active = theme.themedir .. "/icons/titleb
 theme.titlebar_maximized_button_focus_active  = theme.themedir .. "/icons/titlebar/maximized_focus_active.png"
 
 -- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "awsetbg -u feh -r /home/khalavak/Pictures/Wallpaper/" }
+theme.wallpaper_cmd = { "awsetbg /home/khalavak/Pictures/Wallpaper/wallpaper901369.jpg" }
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = theme.themedir .. "/icons/layouts/fairh.png"

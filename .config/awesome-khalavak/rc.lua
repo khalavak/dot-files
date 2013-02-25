@@ -12,6 +12,7 @@ require("naughty")
 -- Load some libraries
 local vicious = require("vicious")
 require("vicious")
+require("xrandr")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -41,16 +42,146 @@ end
 -- {{{ Default configuraion
 
 cpugraph_enable = true -- Show CPU graph                                       
-cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individually
-                                                                               
+cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individually                                                                          
 membar_enable = true -- Show memory bar                                        
-memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free             
-                                                                               
-date_format = "%a %m/%d/%Y %H:%M" -- refer to http://en.wikipedia.org/wiki/Date_(Unix) specifiers
-                                                                               
+memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free                                                                                       
+date_format = "%a %m/%d/%Y %H:%M" -- refer to http://en.wikipedia.org/wiki/Date_(Unix)                                                                              
 networks = {'eth0', 'wlan0'} -- add your devices network interface here netwidget, only shows first one thats up.
 
 -- }}}
+
+--- {{{ Local functions
+
+-- Get active outputs
+local function outputs()
+   local outputs = {}
+   local xrandr = io.popen("xrandr -q")
+   if xrandr then
+      for line in xrandr:lines() do
+	 output = line:match("^([%w-]+) connected ")
+	 if output then
+	    outputs[#outputs + 1] = output
+	 end
+      end
+      xrandr:close()
+   end
+
+   return outputs
+end
+
+local function arrange(out)
+   -- We need to enumerate all the way to combinate output. We assume
+   -- we want only an horizontal layout.
+   local choices  = {}
+   local previous = { {} }
+   for i = 1, #out do
+      -- Find all permutation of length `i`: we take the permutation
+      -- of length `i-1` and for each of them, we create new
+      -- permutations by adding each output at the end of it if it is
+      -- not already present.
+      local new = {}
+      for _, p in pairs(previous) do
+	 for _, o in pairs(out) do
+	    if not awful.util.table.hasitem(p, o) then
+	       new[#new + 1] = awful.util.table.join(p, {o})
+	    end
+	 end
+      end
+      choices = awful.util.table.join(choices, new)
+      previous = new
+   end
+
+   return choices
+end
+
+-- Build available choices
+local function menu()
+   local menu = {}
+   local out = outputs()
+   local choices = arrange(out)
+
+   for _, choice in pairs(choices) do
+      local cmd = "xrandr"
+      -- Enabled outputs
+      for i, o in pairs(choice) do
+	 cmd = cmd .. " --output " .. o .. " --auto"
+	 if i > 1 then
+	    cmd = cmd .. " --right-of " .. choice[i-1]
+	 end
+      end
+      -- Disabled outputs
+      for _, o in pairs(out) do
+	 if not awful.util.table.hasitem(choice, o) then
+	    cmd = cmd .. " --output " .. o .. " --off"
+	 end
+      end
+
+      local label = ""
+      if #choice == 1 then
+	 label = 'Only <span weight="bold">' .. choice[1] .. '</span>'
+      else
+	 for i, o in pairs(choice) do
+	    if i > 1 then label = label .. " + " end
+	    label = label .. '<span weight="bold">' .. o .. '</span>'
+	 end
+      end
+
+      menu[#menu + 1] = { label,
+			  cmd,
+                          "/usr/share/icons/gnome/32x32/devices/display.png"}
+   end
+
+   return menu
+end
+
+-- Display xrandr notifications from choices
+local state = { iterator = nil,
+		timer = nil,
+		cid = nil }
+local function xrandr()
+   -- Stop any previous timer
+   if state.timer then
+      state.timer:stop()
+      state.timer = nil
+   end
+
+   -- Build the list of choices
+   if not state.iterator then
+      state.iterator = awful.util.table.cycle(menu(),
+					function() return true end)
+   end
+
+   -- Select one and display the appropriate notification
+   local next  = state.iterator()
+   local label, action, icon
+   if not next then
+      label, icon = "Keep the current configuration", "/usr/share/icons/gnome/32x32/devices/display.png"
+      state.iterator = nil
+   else
+      label, action, icon = unpack(next)
+   end
+   state.cid = naughty.notify({ text = label,
+				icon = icon,
+				timeout = 4,
+				screen = mouse.screen, -- Important, not all screens may be visible
+				font = "Free Sans 18",
+				replaces_id = state.cid }).id
+
+   -- Setup the timer
+   state.timer = timer { timeout = 4 }
+   state.timer:add_signal("timeout",
+			  function()
+			     state.timer:stop()
+			     state.timer = nil
+			     state.iterator = nil
+			     if action then
+				awful.util.spawn(action, false)
+			     end
+			  end)
+   state.timer:start()
+end
+
+--- }}}
 
 
 -- {{{ Variable definitions
@@ -74,27 +205,33 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
---    awful.layout.suit.floating,
+    awful.layout.suit.floating,
     awful.layout.suit.tile,
 --    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
+--    awful.layout.suit.tile.top,
+--    awful.layout.suit.fair,
 --    awful.layout.suit.fair.horizontal,
 --    awful.layout.suit.spiral,
 --    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    awful.layout.suit.magnifier,
+    awful.layout.suit.max
+--   awful.layout.suit.max.fullscreen
 }
 -- }}}
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+    names = { "1-shell", "2-mail", "3-chrome", "4-fox", "5-doc", "6-hack", "7-hack", "8-virt","9-im" },
+    layout = { layouts[2], layouts[2], layouts[5], layouts[5], layouts[5], layouts[2], layouts[2], layouts[5], layouts[2]}
+}
+
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "1-shell", "2-web", "3-mail", "4-virt", "5-hack", "6-prog", "7-misc","8-im" }, s, layouts[2])
+--    tags[s] = awful.tag({ "1-shell", "2-mail", "3-chrome", "4-fox", "5-doc", "6-hack", "7-hack", "8-virt","9-im" }, s, layouts[2])
+--    tag
+      tags[s] = awful.tag(tags.names,s,tags.layout)                              
 end
 -- }}}
 
@@ -188,7 +325,7 @@ mytextclock = awful.widget.textclock({ align = "right" })
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
-mystatusbar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 12 })
+-- mystatusbar = awful.wibox({ position = "bottom", screen = 1, ontop = false, width = 1, height = 1 })
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -349,7 +486,14 @@ globalkeys = awful.util.table.join(
               end),
 
     -- My own bindings
-    awful.key({ modkey,           }, "End",    function () awful.util.spawn_with_shell("xscreensaver-command -lock") end )
+    awful.key({ modkey,           }, "End",    function () awful.util.spawn_with_shell("xscreensaver-command -lock") end ),
+    -- bind PrintScrn to capture a screen
+    awful.key({ }, "Print", function() awful.util.spawn("xfce4-screenshooter",false) end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master 9%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master 9%-") end),
+    awful.key({ }, "XF86Display", function () awful.util.spawn_with_shell("~/bin/confscreens") end),
+    awful.key({ modkey }, "F4", function () awful.util.spawn_with_shell("~/bin/showscreens") end), 
+    awful.key({ modkey, "Alt" }, "F5", function () awful.util.spawn_with_shell("~/bin/confprojector") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -437,13 +581,15 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     { rule = { class = "Thunderbird" },                                           
-          properties = { tag = tags[1][3], floating=false  } }, 
+          properties = { tag = tags[1][2], floating=false  } }, 
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][2], floating=false } },
+      properties = { tag = tags[1][4], floating=false } },
     { rule = { class = "Chromium" },
-      properties = { tag = tags[1][2], floating=false  } },
+      properties = { tag = tags[1][3], floating=false  } },
     { rule = { class = "Pidgin" },
-      properties = { tag = tags[1][8] } },
+      properties = { tag = tags[1][9] } },
+    { rule = { class = "VirtualBox" },                       
+          properties = { tag = tags[1][8] } },
   }
 -- }}}
 
@@ -498,6 +644,7 @@ run_once("conky","-d","conky -d")
 run_once("pidgin")
 run_once("nm-applet")
 run_once("xfce4-power-manager")
+run_once("/home/khalavak/.dropbox-dist/dropboxd")
 run_once("/opt/davmail/davmail.sh",nil,"/bin/bash /opt/davmail/davmail.sh")
 run_once("wmname", "LG3D") -- java fix
 
