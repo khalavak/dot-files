@@ -90,7 +90,7 @@ bindsym $mod+4 workspace 4: vpn
 bindsym $mod+5 workspace 5: doc
 bindsym $mod+6 workspace 6: vim
 bindsym $mod+7 workspace 7: hack
-bindsym $mod+8 workspace 8
+bindsym $mod+8 workspace 8: misc
 bindsym $mod+9 workspace 9: virt
 bindsym $mod+0 workspace 10: im
 
@@ -102,7 +102,7 @@ bindsym $mod+Shift+currency move container to workspace 4: vpn
 bindsym $mod+Shift+percent move container to workspace 5: doc
 bindsym $mod+Shift+ampersand move container to workspace 6: vim
 bindsym $mod+Shift+slash move container to workspace 7: hack
-bindsym $mod+Shift+parenleft move container to workspace 8
+bindsym $mod+Shift+parenleft move container to workspace 8: misc
 bindsym $mod+Shift+parenright move container to workspace 9: virt
 bindsym $mod+Shift+equal move container to workspace 10: im
 
@@ -115,6 +115,7 @@ workspace "4: vpn" output LVDS
 workspace "5: doc" output LVDS
 workspace "6: vim" output LVDS
 workspace "7: hack" output LVDS
+workspace "8: misc" output LVDS
 workspace "9: virt" output VGA-0
 workspace "10: im" output LVDS
 
