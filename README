@@ -9,15 +9,12 @@ cd ~
 git clone git@github.com:khalavak/dot-files.git ~/.dotfiles
 
 cd ~/.dotfiles
-git submodule init
-git submodule update
-ln -s ~/.dotfiles/.vimrc ~/.vimrc
-ln -s ~/.dotfiles/.vim ~/.vim
-ln -s ~/.dotfiles/.bashrc ~/.bashrc
-ln -s ~/.dotfiles/.conkyrc ~/.conkyrc                                            
 
+Run the scrit
 
-To update all git modules :
+create-dotlinks.sh
 
-git submodule foreach git pull branch master
+Answer 'yes' to all files that you like to create links to!
+
+Done!
 
