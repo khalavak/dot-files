@@ -1,1 +1,1 @@
-/home/khalavak/.vim/bundle/vim-colors-solarized/colors/solarized.vim
+../bundle/vim-colors-solarized/colors/solarized.vim
