@@ -9,6 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+# Set the mod-key
 set $mod Mod4
 
 # font for window titles. ISO 10646 = Unicode
@@ -17,11 +18,11 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-
 # Various settings
 workspace_auto_back_and_forth yes
+
 #force_display_urgency_hint 500ms
-focus_follows_mouse no
+focus_follows_mouse yes
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -83,41 +84,47 @@ bindsym $mod+a focus parent
 #bindcode $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1: shell
-bindsym $mod+2 workspace 2: mail
-bindsym $mod+3 workspace 3: web
-bindsym $mod+4 workspace 4: vpn
-bindsym $mod+5 workspace 5: doc
-bindsym $mod+6 workspace 6: vim
-bindsym $mod+7 workspace 7: hack
-bindsym $mod+8 workspace 8: misc
-bindsym $mod+9 workspace 9: virt
-bindsym $mod+0 workspace 10: im
+bindsym $mod+1 workspace 1
+bindsym capslock+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+exclam move container to workspace 1: shell
-bindsym $mod+Shift+quotedbl move container to workspace 2: mail
-bindsym $mod+Shift+numbersign move container to workspace 3: web
-bindsym $mod+Shift+currency move container to workspace 4: vpn
-bindsym $mod+Shift+percent move container to workspace 5: doc
-bindsym $mod+Shift+ampersand move container to workspace 6: vim
-bindsym $mod+Shift+slash move container to workspace 7: hack
-bindsym $mod+Shift+parenleft move container to workspace 8: misc
-bindsym $mod+Shift+parenright move container to workspace 9: virt
-bindsym $mod+Shift+equal move container to workspace 10: im
+bindsym $mod+Shift+exclam move container to workspace 1
+bindsym $mod+Shift+quotedbl move container to workspace 2
+bindsym $mod+Shift+numbersign move container to workspace 3
+bindsym $mod+Shift+currency move container to workspace 4
+bindsym $mod+Shift+percent move container to workspace 5
+bindsym $mod+Shift+ampersand move container to workspace 6
+bindsym $mod+Shift+slash move container to workspace 7
+bindsym $mod+Shift+parenleft move container to workspace 8
+bindsym $mod+Shift+parenright move container to workspace 9
+bindsym $mod+Shift+equal move container to workspace 10
 
 # Workspaces and screen placement
 
-workspace "1: shell" output LVDS
-workspace "2: mail" output LVDS
-workspace "3: web" output DisplayPort-2
-workspace "4: vpn" output LVDS
-workspace "5: doc" output LVDS
-workspace "6: vim" output LVDS
-workspace "7: hack" output LVDS
-workspace "8: misc" output LVDS
-workspace "9: virt" output VGA-0
-workspace "10: im" output LVDS
+workspace "1" output LVDS
+workspace "2" output LVDS
+workspace "3" output DisplayPort-2
+workspace "4" output LVDS
+workspace "5" output LVDS
+workspace "6" output LVDS
+workspace "7" output LVDS
+workspace "8" output LVDS
+workspace "9" output VGA-0
+workspace "10" output VGA-0
+
+# Change border style
+bindsym $mod+t border normal
+bindsym $mod+y border 1pixel
+bindsym $mod+u border none
 
 # reload the configuration file
 bindsym $mod+Shift+C reload
@@ -161,7 +168,9 @@ mode "resize" {
         # Pressing left will shrink the window’s width.
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
+        
+
+# Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
@@ -184,23 +193,44 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
 	position top
+        mode hide
         status_command i3status
 	tray_output LVDS
 }
 
 
 # Assign applications to workspaces
-assign [class="^urxvt"] 1: shell
-assign [class="Thunderbird"] 2: mail
-assign [class="Chromium"] 3: web
-assign [class="Pidgin"] 10: im
-assign [class="pidgin"]  10: im
-assign [class="VirtualBox"] 9: virt
+assign [class="^urxvt"] 1
+assign [class="Thunderbird"] 2
+assign [class="Chromium"] 3
+assign [class="Pidgin"] 5
+assign [class="pidgin"] 5
+assign [class="VirtualBox"] 9
+assign [title="pinpoint"] 10
+
+# Assign modes to applications
+# Run pinpoint presentation without borders
+for_window [title="pinpoint"] border none
+
+# Start pinpoint with no border
+#
+# enable floating mode for all XTerm windows
+#for_window [class="XTerm"] floating enable
+
+# Make all urxvts use a 1-pixel border:
+for_window [title="urxvt"] border normal
+
+# A less useful, but rather funny example:
+# makes the window floating as soon as I change
+# directory to ~/work
+# for_window [title="x200: ~/work"] floating enable
 
 # Execute applications
-exec --no-startup-id feh --bg-scale /home/khalavak/Pictures/Wallpaper/243466-1920x1080.jpg
-exec --no-startup-id nm-applet
+exec --no-startup-id  feh --bg-scale /home/khalavak/Pictures/Wallpaper/fedore-cool-background.png
+exec --no-startup-id nm-cale /home/khalavak/Pictures/Wallpaper/243466-1920x1080.jpgpplet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id /opt/davmail/davmail.sh
 exec --no-startup-id pidgin
 exec --no-startup-id parcellite
+exec --no-startup-id xautolock -time 5 -locker 'i3lock -c 000000'
+
