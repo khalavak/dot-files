@@ -1,9 +1,10 @@
 #!/bin/bash
 # Script to create the links in the home directory to the .dotfiles
 
-# Update the latest dotfiles from github
+# Update the latest dotfiles and git submodules from github
 
 git pull
+git sybmodule update
 
 # Create the links
 
