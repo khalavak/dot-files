@@ -4,7 +4,7 @@
 # Update the latest dotfiles and git submodules from github
 
 git pull
-git sybmodule update
+git submodule update
 
 # Create the links
 
