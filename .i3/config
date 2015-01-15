@@ -137,7 +137,7 @@ bindsym $mod+Shift+E exit
 
 # Lock screen
 
-bindsym $mod+End exec --no-startup-id i3lock -t -c 000000 -i ~/Pictures/Wallpaper/computers_digital_art_1280x800_wallpaper_Wallpaper_1600x1200_www.wall321.com.png
+bindsym $mod+End exec --no-startup-id i3lock -t -c 000000 -i  ~/Pictures/Wallpaper/fedora-wallpaper-30748-31471-hd-wallpapers.jpg
 
 # Make the currently focused window a scratchpad
  bindsym $mod+Shift+minus move scratchpad
@@ -154,7 +154,7 @@ bindsym $mod+Mod1+3 exec --no-startup-id /home/khalavak/bin/confscreens.py -3
 bindsym $mod+Mod1+4 exec --no-startup-id /home/khalavak/bin/confscreens.py -4
 bindsym $mod+Mod1+5 exec --no-startup-id /home/khalavak/bin/confscreens.py -5
 bindsym $mod+Mod1+6 exec --no-startup-id /home/khalavak/bin/confscreens.py -6
-
+bindsym $mod+Mod1+7 exec --no-startup-id /home/khalavak/bin/confscreens.py -7
 
 # Audio volume
 bindsym XF86AudioRaiseVolume exec amixer -q sset Master 5%+ unmute
@@ -203,12 +203,12 @@ bar {
 # Assign applications to workspaces
 assign [class="^urxvt"] 1
 assign [class="Thunderbird"] 2
-assign [class="Chromium"] 3
+assign [class="Chromium"] 9
+assign [class="Firefox"] 10
 assign [class="Pidgin"] 5
 assign [class="pidgin"] 5
-assign [class="VirtualBox"] 9
+assign [class="VirtualBox"] 3
 assign [title="pinpoint"] 10
-assign [class="Firefox"] 4
 
 # Assign modes to applications
 # Run pinpoint presentation without borders
@@ -228,12 +228,12 @@ for_window [title="urxvt"] border normal
 # for_window [title="x200: ~/work"] floating enable
 
 # Execute applications
-exec --no-startup-id feh -z --bg-scale ~/Pictures/Wallpaper/computers_digital_art_1280x800_wallpaper_Wallpaper_1600x1200_www.wall321.com.png
+exec --no-startup-id feh -z --bg-scale ~/Pictures/Wallpaper/minimalistic_lost_tv_series_space_invaders_dharma_sprites_desktop_1366x768_hd-wallpaper-1076622.jpg
 # exec --no-startup-id feh -z --bg-scale ~/Pictures/Wallpaper/*
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id /opt/davmail/davmail.sh
 exec --no-startup-id pidgin
 exec --no-startup-id parcellite
-exec --no-startup-id xautolock -time 5 -locker 'i3lock -t -c 000000 -i ~/Pictures/Wallpaper/computers_digital_art_1280x800_wallpaper_Wallpaper_1600x1200_www.wall321.com.png' 
+exec --no-startup-id xautolock -time 5 -locker 'i3lock -t -c 000000 -i ~/Pictures/Wallpaper/fedora-wallpaper-30748-31471-hd-wallpapers.jpg 
 

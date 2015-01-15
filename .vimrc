@@ -1,10 +1,18 @@
+" Call Pathogen
+filetype off
+call pathogen#infect()                                                            
+call pathogen#helptags()  
+
+filetype plugin indent on
+filetype indent plugin on
+syntax on
+
+" Set theme/colors
+set t_Co=256
 set background=dark
 colorscheme solarized
 
-syntax on
-filetype indent plugin on
-filetype plugin indent on
-
+" Set nifty settings
 set nocompatible
 set number
 set expandtab
@@ -31,5 +39,51 @@ autocmd FileType python set complete+=k~/.vim/syntax/python.vim isk+=.,(
 nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR> 
 cmap w!! %!sudo tee > /dev/null %
 
-call pathogen#infect() 
+" Airline configs
+let g:airline_theme='tomorrow'
 
+" Map Vim splits directly to Ctrl+j/k/h/l
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Open split panes to the right and bottom
+set splitbelow
+set splitright
+
+" NERDTree configs
+"autocmd vimenter * NERDTree
+autocmd vimenter * if !argc() | NERDTree | endif
+map <C-n> :NERDTreeToggle<CR>
+
+" Python-mode plugin settings
+"
+" Activate rope
+let g:pymode_rope = 1
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+"
+" "Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+"
+" Support virtualenv
+let g:pymode_virtualenv = 1
+"
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_key = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
