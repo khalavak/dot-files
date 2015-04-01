@@ -1,9 +1,18 @@
 set background=dark
+
+"colorscheme lucius
+"colorscheme mustang
 colorscheme solarized
+"colorscheme distinguished
+"colorscheme twilight
 
 syntax on
 filetype indent plugin on
 filetype plugin indent on
+
+inoremap jj <ESC>
+
+let mapleader = "<SPACE>"
 
 set nocompatible
 set number
@@ -32,4 +41,11 @@ nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
 cmap w!! %!sudo tee > /dev/null %
 
 call pathogen#infect() 
+
+" GitGutter key-mappings
+nmap <Leader>hn <Plug>GitGutterNextHunk
+nmap <Leader>hp <Plug>GitGutterPrevHunk
+nmap <Leader>ha <Plug>GitGutterStageHunk
+nmap <Leader>hu <Plug>GitGutterRevertHunk
+nmap <Leader>hv <Plug>GitGutterPreviewHunk
 
