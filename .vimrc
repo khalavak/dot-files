@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 set background=dark
 
 "colorscheme lucius
