@@ -6,7 +6,7 @@ set background=dark
 colorscheme solarized
 "colorscheme distinguished
 "colorscheme twilight
-=======
+
 " Call Pathogen
 filetype off
 call pathogen#infect()                                                            
