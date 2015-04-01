@@ -14,10 +14,6 @@
     path = .vim/bundle/vim-gitgutter
     url = git://github.com/airblade/vim-gitgutter.git
 
-[submodule ".vim/bundle/vim-ansible-yaml"]
-    path = .vim/bundle/vim-ansible-yaml
-    url = git://github.com/chase/vim-ansible-yaml.git
-
 [submodule ".vim/bundle/vim-distinguished"]
     path = .vim/bundle/vim-distinguished
     url = git://github.com/Lokaltog/vim-distinguished.git 
