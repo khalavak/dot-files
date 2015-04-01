@@ -17,3 +17,7 @@
 [submodule ".vim/bundle/vim-distinguished"]
     path = .vim/bundle/vim-distinguished
     url = git://github.com/Lokaltog/vim-distinguished.git 
+
+[submodule ".vim/bundle/nerdtree"]
+    path = .vim/bundle/nerdtree
+    url = git://github.com/scrooloose/nerdtree
